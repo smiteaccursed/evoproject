@@ -2,7 +2,7 @@
 **/venv/*
 __pycache__
 .vscode
-deploy/mongo/data/*
-!deploy/mongo/data/.gitkeep
-deploy/postgresql/data/*
-!deploy/postgresql/data/.gitkeep
+**deploy/mongo/data/*
+!**deploy/mongo/data/.gitkeep
+**deploy/postgresql/data/*
+!**deploy/postgresql/data/.gitkeep
