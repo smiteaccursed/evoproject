@@ -1,13 +1,13 @@
 # library service
-## Установка
-- Настроить PostgreSQL в папке deploy. 
-	- docker-compose up -d
-- Подготовить виртуальное окружение
-	- Добавить: `python3 -m venv venv`
-	- Активировать: `venv/bin/activate`
-	- Установить зависимости: `pip install -r requirements.txt` 
+## Installation
+- Configure PostgreSQL in the deploy folder. 
+ 	- docker-compose up -d
+- Prepare a virtual environment
+	 - Add: `python3 -m venv venv`
+ 	- Activate: `venv/bin/activate`
+ 	- Install dependencies: `pip install -r requirements.txt ` 
 
-## Запуск
+## Start
 uvicorn app.app:app --port 5000 --reload
 
 ## Api
