@@ -12,7 +12,7 @@ def create_book(
     Создает новую книгу в БД
     '''
     db_book = models.Book(
-        book_id=book.id,
+        id=book.id,
         name = book.name,
         rating = book.rating,
         genres = book.genres,
