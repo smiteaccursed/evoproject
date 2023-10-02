@@ -1,14 +1,13 @@
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 
-from .schemas.library import Book, BookBase
-
 from sqlalchemy.sql import text
 from sqlalchemy.orm import Session
 
 from .database import SessionLocal, engine, Base
 import typing
-from .schemas import Book, BookBase, BookUpdate
+from .schemas import BookCreate, Book
+from .schemas import BookBase, BookUpdate
 from . import crud
 
 ##______________##

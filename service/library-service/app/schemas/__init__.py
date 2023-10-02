@@ -1,3 +1,3 @@
-from .library import Book, BookBase, BookUpdate
+from .library import BookCreate, BookBase, BookUpdate, Book
 
-__all__=[Book, BookBase, BookUpdate]
+__all__=[BookCreate, BookBase, BookUpdate, Book]
