@@ -13,6 +13,7 @@ def create_book(
     '''
     db_book = models.Book(
         name = book.name,
+        user_id=book.user_id,
         rating = book.rating,
         genres = book.genres,
         type= book.type,
@@ -48,6 +49,19 @@ def get_book_ID(
             .filter(models.Book.id == id) \
             .first()
 
+
+def get_user_books(
+         id: int, db: Session, skip: int = 0, limit: int = 100
+    ) -> models.Book:
+    '''
+    Возвращает информацию о книгах пользователя
+    '''
+    return  db.query(models.Book) \
+            .filter(models.Book.user_id== id) \
+            .offset(skip) \
+            .limit(limit)\
+            .all()
+
 def update_book(
         db: Session, book_id: int, book: schemas.BookUpdate
     ) -> models.Book:
@@ -78,6 +92,19 @@ def delete_book(
     return result == 1
 
 def delete_books(db: Session) -> bool:
+    '''
+    Удаляет ВСЕ книги
+    '''
     result = db.query(models.Book).delete()
     db.commit()
     return result > 0
+
+def delete_user_books(db: Session, id:int) -> bool:
+     '''
+    Удаляет ВСЕ книги ПОЛЬЗОВАТЕЛЯ
+    '''
+     result =    db.query(models.Book) \
+                .filter(models.Book.user_id ==id) \
+                .delete()
+     db.commit()
+     return result>0
