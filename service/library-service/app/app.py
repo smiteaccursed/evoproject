@@ -1,21 +1,39 @@
+import typing, logging
+
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 
-from sqlalchemy.sql import text
 from sqlalchemy.orm import Session
 
-from .database import SessionLocal, engine, Base
-import typing
-from .schemas import BookCreate, Book
+from .database.db import DB_INITIALIZER
+
+from .schemas import Book
 from .schemas import BookBase, BookUpdate
-from . import crud
+from . import crud, config
 
 ##______________##
 ## Инициализация
 ##______________##
 
-Base.metadata.create_all(bind=engine)
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=20,
+    format="%(levelname)-9s %(message)s"
+)
 
+logger.info("Configuration loading...")
+cfg: config.Config = config.load_config(_env_file='.env')
+logger.info(
+    'Service configuration loaded:\n' +
+    f'{cfg.model_dump_json(by_alias=True, indent=4)}'
+)
+
+
+# Создать все начальные данные
+logger.info('Database initialization...')
+SessionLocal = DB_INITIALIZER.init_db(cfg.pg_dsn.unicode_string())
+
+#Получить доступ к базе данных
 def get_db() -> Session:
     db = SessionLocal()
     try: yield db
@@ -64,6 +82,15 @@ async def delete_book(bookID: int, db:Session=Depends(get_db)) -> Book :
     if crud.delete_book(db, bookID):
         return JSONResponse(status_code=200, content={"message": "Book deleted"})
     return JSONResponse(status_code=404, content={"message": "Book not found"})
+
+@app.delete("/booksall/", 
+            summary='Удаляет ВСЕ книги из базы')
+
+async def delete_books(db:Session=Depends(get_db)) -> Book :
+    if crud.delete_books(db):
+        return JSONResponse(status_code=200, content={"message": "Books deleted"})
+    return JSONResponse(status_code=404, content={"message": "Error"})
+
 
 ## Обновление информации о книге 
 

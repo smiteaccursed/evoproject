@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from ..database.models import BookStatus
 
 #То что требуется при первом создании
 class BookBase(BaseModel):
@@ -14,15 +15,15 @@ class BookBase(BaseModel):
     authors: list[str] = Field(title='Авторы книги') # Предполагаем, что авторы книги представлены списком строк
     series: Optional[str] = Field(title='Принадлежность к серии', default=None)
     about: Optional[str] = Field(title='Описание книги', default=None )
+    status: BookStatus = Field(title="Статус книги", 
+                                   default=BookStatus.wanted, 
+                                   description="""wanted = 1\
+        available = 2\
+        readed = 3
+    """)
 
 class Book(BookBase):
     id: int = Field(title='Идентификатор книги', default=None)
-
-class BookCreate(BookBase):
-    '''
-    Используемая при запросе информации о книге
-    '''
-    #id: int = Field(title='Идентификатор книги', default=None)
 
 class BookUpdate(BookBase):
     '''

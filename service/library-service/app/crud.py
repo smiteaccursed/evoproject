@@ -16,6 +16,7 @@ def create_book(
         rating = book.rating,
         genres = book.genres,
         type= book.type,
+        status = book.status,
         authors = book.authors,
         series= book.series,
         about = book.about,
@@ -32,7 +33,7 @@ def get_books(
     '''
     Возвращает инфомрмацию о книгах
     '''
-    return  db.query(models.Book) \
+    return db.query(models.Book) \
             .offset(skip) \
             .limit(limit) \
             .all()
@@ -75,3 +76,8 @@ def delete_book(
                 .delete()
     db.commit()
     return result == 1
+
+def delete_books(db: Session) -> bool:
+    result = db.query(models.Book).delete()
+    db.commit()
+    return result > 0
