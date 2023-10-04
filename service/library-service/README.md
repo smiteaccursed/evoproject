@@ -1,14 +1,31 @@
-# library service
-## Installation
-- Configure PostgreSQL in the deploy folder. 
- 	- docker-compose up -d
-- Prepare a virtual environment
-	 - Add: `python3 -m venv venv`
- 	- Activate: `venv/bin/activate`
- 	- Install dependencies: `pip install -r requirements.txt ` 
+# Library service
+## Установка
+- Установка зависимостей: `pip install -r requirements.txt `
+- Подготовка .env файла: `PG_DSN = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"`
 
-## Start
+# Запуск с использование файла конфигурации .env
+
+Для запуска из файла конфигурации нужно поместить файл .env в корень сервиса
+
+# Конфигурация
+| Переменная    | Назначение                      | Значение по-умолчанию                        |
+| -----------   | -----                           | ---                                          |
+| POSTGRES_DSN  | Строка подключения к PostgreSQL | postgresql://user:pass@localhost:5432/foobar |
+
+# Значения POSTGRES_DSN для .env 
+| Поле | Назначение |
+|----- |-------|
+| user | логин |
+| pass | пароль|
+| localhost | IP |
+| 5432 | Порт |
+| footbar | название БД |
+## Запуск
 uvicorn app.app:app --port 5000 --reload
+
+## Документация
+Documentation: `http://localhost:5000/docs`
+
 
 ## Api
 | Method | Route           | Description        |
@@ -18,4 +35,6 @@ uvicorn app.app:app --port 5000 --reload
 | GET    | `/books/{bookID}` | Get book by ID    |
 | DELETE | `/books/{bookID}` | Delete book by ID |
 | PUT    | `/books/{bookID}` | Update book_info by ID |
-  
+| DELET |  | Delete all books |
+| GET    | `/userbooks/{userID}` | Get user book by ID    |
+| DELET |  `/userbooks/{userID}`| Delete user book by ID |
