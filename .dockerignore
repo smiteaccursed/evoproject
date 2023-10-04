@@ -1,6 +1,6 @@
 **/__pycache__/*
-**.env*
 **/venv/*
+**.env*
 .vscode
 deploy/mongo/data/*
 !deploy/mongo/data/.gitkeep
