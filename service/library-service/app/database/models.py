@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, JSON, Enum
+from sqlalchemy.dialects.postgresql import UUID
 
 from .db import Base
 import enum
@@ -9,8 +10,8 @@ class BookStatus(enum.Enum):
 class Book(Base):
     __tablename__ = "library"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id=Column(Integer,default=-1)
+    id = Column(Integer, primary_key=True, index=True, unique=True)
+    user_id=Column(UUID(as_uuid=True))
     name = Column(String)
     status = Column(Enum(BookStatus), default=BookStatus.wanted)
     rating=Column(Integer,info={'min': 0, 'max': 10})

@@ -1,14 +1,14 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 from ..database.models import BookStatus
-
 #То что требуется при первом создании
+from uuid import UUID
 class BookBase(BaseModel):
     '''
     База книги. Стоит ли разделить на несколько таблиц ?
     '''
     #id: int = Field(title='Идентификатор книги', default=None)
-    user_id:int= Field(title='ID пользователя, добавившего книгу')
+    user_id:UUID= Field(title='ID пользователя, добавившего книгу')
     name:str = Field(title='Название книги')
     rating: int = Field(title='Оценка книги', ge=0, le=10)  # Ограничение оценки от 0 до 10
     genres: list[str] = Field(title='Жанры книги')  # Жанры в виде списка строк

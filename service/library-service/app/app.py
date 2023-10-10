@@ -4,12 +4,14 @@ from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 
 from sqlalchemy.orm import Session
+from uuid import UUID
 
 from .database.db import DB_INITIALIZER
 
 from .schemas import Book
 from .schemas import BookBase, BookUpdate
 from . import crud, config
+from typing import Optional
 
 ##______________##
 ## Инициализация
@@ -46,15 +48,19 @@ app = FastAPI(
 
 ## Список книг
 
-@app.get("/books", 
-        summary='Возвращает список всех книг', 
+@app.get("/books/", 
+        summary='Возвращает список книг', 
         response_model=list[Book])
-async def get_books_list(db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> typing.Iterable[Book] :
-    return crud.get_books(db, skip, limit)
+async def get_user_books(id: Optional[UUID]=None, db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> typing.Iterable[Book] :
+    if id is not None:
+        return crud.get_user_books(id, db, skip, limit)
+    else:
+        return crud.get_books(db, skip, limit)
+
 
 ## Создание новой книги
 
-@app.post("/books", 
+@app.post("/book", 
           response_model=Book,
           summary='Добавляет книгу в базу')
 
@@ -73,13 +79,6 @@ async def get_book_info(bookID: int, db: Session=Depends(get_db)) -> Book :
     else:
         return book
     
-## Книги по userid
-
-@app.get("/user_books/{userID}", 
-        summary='Возвращает список книг пользоватея', 
-        response_model=list[Book])
-async def get_user_books(id:int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> typing.Iterable[Book] :
-    return crud.get_user_books(id, db, skip, limit)
 
 ## удаление
 
@@ -91,24 +90,20 @@ async def delete_book(bookID: int, db:Session=Depends(get_db)) -> Book :
         return JSONResponse(status_code=200, content={"message": "Book deleted"})
     return JSONResponse(status_code=404, content={"message": "Book not found"})
 
-## Удаление ВСЕХ книг
 
-@app.delete("/booksall/", 
-            summary='Удаляет ВСЕ книги из базы')
 
-async def delete_books(db:Session=Depends(get_db)) -> Book :
-    if crud.delete_books(db):
-        return JSONResponse(status_code=200, content={"message": "Books deleted"})
-    return JSONResponse(status_code=404, content={"message": "Error"})
+## Удаление книг 
 
-## Удаление ВСЕХ книг ПОЛЬЗОВАТЕЛЯ
+@app.delete("", 
+            summary='Удаляет книги')
 
-@app.delete("/user_booksall/", 
-            summary='Удаляет ВСЕ книги Пользователя')
-
-async def delete_user_books(id: int, db:Session=Depends(get_db)) -> Book :
-    if crud.delete_user_books(db, id):
-        return JSONResponse(status_code=200, content={"message": "Books deleted"})
+async def delete_user_books(id: Optional[UUID] = None, db:Session=Depends(get_db)) -> Book :
+    if id is not None:
+        if crud.delete_user_books(db, id):
+            return JSONResponse(status_code=200, content={"message": "Books deleted"})
+    else:
+         if crud.delete_all_books(db):
+            return JSONResponse(status_code=200, content={"message": "All books deleted"})
     return JSONResponse(status_code=404, content={"message": "Error"})
 
 

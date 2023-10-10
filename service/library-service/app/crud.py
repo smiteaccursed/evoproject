@@ -1,6 +1,6 @@
 import typing
-
 from sqlalchemy.orm import Session
+from sqlalchemy.dialects.postgresql import UUID
 
 from .database import models
 from . import schemas
@@ -51,7 +51,7 @@ def get_book_ID(
 
 
 def get_user_books(
-         id: int, db: Session, skip: int = 0, limit: int = 100
+         id: UUID, db: Session, skip: int = 0, limit: int = 100
     ) -> models.Book:
     '''
     Возвращает информацию о книгах пользователя
@@ -99,7 +99,7 @@ def delete_books(db: Session) -> bool:
     db.commit()
     return result > 0
 
-def delete_user_books(db: Session, id:int) -> bool:
+def delete_user_books(db: Session, id:UUID) -> bool:
      '''
     Удаляет ВСЕ книги ПОЛЬЗОВАТЕЛЯ
     '''
