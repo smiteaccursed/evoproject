@@ -40,6 +40,6 @@ Documentation: `http://localhost:5000/docs`
 | GET    | `/books/{bookID}` | Get book by ID    |
 | DELETE | `/books/{bookID}` | Delete book by ID |
 | PUT    | `/books/{bookID}` | Update book_info by ID |
-| DELET |  | Delete all books |
+| DELETE |  | Delete all books |
 | GET    | `/userbooks/{userID}` | Get user book by ID    |
-| DELET |  `/userbooks/{userID}`| Delete user book by ID |
+| DELETE |  `/userbooks/{userID}`| Delete user book by ID |
