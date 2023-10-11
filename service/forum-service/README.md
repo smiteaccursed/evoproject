@@ -1,4 +1,5 @@
 # Forum service
+Сервис форума, позволяет хранить и работать с топиками и сообщениями в них
 # Если без докера
 ### Установка
 - Установка зависимостей: `pip install -r requirements.txt `
@@ -25,7 +26,7 @@
 uvicorn app.app:app --port 5010 --reload
 # Если через docker
 ## Building 
-`docker build -t "library" .`
+`docker build -t "forum" .`
 ## Запуск
 Для запуска перейдите в папку `deploy` и проследуйте инструкциям
 ## Документация
@@ -34,4 +35,11 @@ Documentation: `http://localhost:5000/docs`
 ## Api
 | Method | Route           | Description        |
 |--------|-----------------|--------------------|
-|SOON|SOON|SOON|
+|GET|/topics/|get all topics|
+|GET|/topic/{topicID}|get topic by ID|
+|DELETE|/topic/{topicID}|delete topic by ID|
+|PUT|/topic/{topicID}|update topic by ID|
+|POST|/topic/|add topic|
+|POST|/topic/{topicID}/message/|add message|
+|GET|/message/{messageID}|get message by ID|
+|PUT|/message/{messageID}|update message by ID|
