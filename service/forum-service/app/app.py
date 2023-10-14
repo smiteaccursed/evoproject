@@ -100,7 +100,7 @@ async def send_message(topicID: int, topic_message:TopicMessageCreate, db: Sessi
          response_model=TopicMessage,
 )
 async def get_message_by_id(messageID: int, db: Session = Depends(get_db)) -> TopicMessage :
-    message = crud.get_message(db, messageID)
+    message = crud.get_messages(db, messageID)
     if message != None:
         return message
     return JSONResponse(status_code=404, content={"message": "Message not found"})
