@@ -29,6 +29,7 @@ class TopicMessageBase(BaseModel):
     text: str=Field(title="Текст сообщения")
 
 class TopicMessage(TopicMessageBase):
+    id:int=Field(title="ID сообщения")
     date:datetime=Field(title="Дата отправки")
     user_id:UUID= Field(title='ID пользователя')
     class Config:
