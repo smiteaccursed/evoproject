@@ -7,10 +7,6 @@ POSTGRES_PASSWORD=пароль
 POSTGRES_USER=логин
 POSTGRES_DB=название БД
 PG_DSN=postgresql://логин:пароль@Локальный IP адресс:порт/название БД
-FPOSTGRES_PASSWORD=пароль
-FPOSTGRES_USER=логин
-FPOSTGRES_DB=название БД
-FPG_DSN=postgresql://логин:пароль@Локальный IP адресс:порт/название БД
 ```
 3. Настройка `docker-compose.yaml` при необходимости
 4. Для запуска
@@ -21,4 +17,4 @@ docker-compose up
 ```ini
 docker-compose down
 ```
-7. Используйте `localhost:5000` для доступа
+7. Используйте `localhost и порт, который указан в docker-compose файле` для доступа
