@@ -47,7 +47,7 @@ async def get_topics(db:Session=Depends(get_db), skip: int = 0, limit: int = 100
 
 
 ##топик по id
-@app.get("/topic/{topicID}", 
+@app.get("/topics/{topicID}", 
          summary='Получение топика по ID'
 )
 async def get_topic_info(topicID: int, db: Session = Depends(get_db)) -> Topic :
@@ -57,7 +57,7 @@ async def get_topic_info(topicID: int, db: Session = Depends(get_db)) -> Topic :
     return JSONResponse(status_code=404, content={"message": "Topic not found"})
 
 ##удаление топика 
-@app.delete("/topic/{topicID}", 
+@app.delete("/topics/{topicID}", 
             summary='Удаляет топик из базы по ID'
 )
 async def delete_topic(topicID: int, db: Session = Depends(get_db)) -> Topic :
@@ -66,7 +66,7 @@ async def delete_topic(topicID: int, db: Session = Depends(get_db)) -> Topic :
     return JSONResponse(status_code=404, content={"message": "Topic not found"})
 
 ##обновление топика
-@app.put("/topic/{topicID}", 
+@app.put("/topics/{topicID}", 
          summary='Обновляет топика по ID'
 )
 async def update_topic(topicID: int, topicbase: TopicUpdate, db: Session = Depends(get_db)) -> Topic :
@@ -76,14 +76,14 @@ async def update_topic(topicID: int, topicbase: TopicUpdate, db: Session = Depen
     return JSONResponse(status_code=404, content={"message": "Topic not found"})
 
 ## добавление топика
-@app.post("/topic", response_model=Topic, summary='Добавляет ветку')
+@app.post("/topics", response_model=Topic, summary='Добавляет ветку')
 async def add_topic(topic:TopicBase, db:Session=Depends(get_db))->Topic:
     return crud.create_topic(db, topic)
 
 ##__________________##
 ## МЕТОДЫ СООБЩЕНИЙ ##
 
-@app.post("/topic/{topicID}/message", summary='Отправка сообщения в топик')
+@app.post("/topics/{topicID}/message", summary='Отправка сообщения в топик')
 
 async def send_message(topicID: int, topic_message:TopicMessageCreate, db: Session = Depends(get_db)) ->TopicMessage:
     topic=crud.get_topic_by_id(db, topicID)
@@ -95,7 +95,7 @@ async def send_message(topicID: int, topic_message:TopicMessageCreate, db: Sessi
     return JSONResponse(status_code=404, content={"message": "Topic not found"})
 
 ## получение
-@app.get("/message/{messageID}", 
+@app.get("/messages/{messageID}", 
          summary='Получить сообщение по id',
          response_model=TopicMessage,
 )
@@ -105,7 +105,7 @@ async def get_message_by_id(messageID: int, db: Session = Depends(get_db)) -> To
         return message
     return JSONResponse(status_code=404, content={"message": "Message not found"})
 ## обновление 
-@app.put("/message/{messageID}", 
+@app.put("/messages/{messageID}", 
          summary='Обновляет сообщение по его ID'
 )
 async def update_message(messageID: int, messagebase: TopicMessageBase, db: Session = Depends(get_db))  :

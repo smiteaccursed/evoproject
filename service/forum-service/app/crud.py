@@ -74,7 +74,7 @@ def send_message(db:Session, topic: models.Topic, topic_message: schemas.TopicMe
 
     return new_message
 
-def get_message(db:Session, message_id:int):
+def get_messages(db:Session, message_id:int):
     return db.query(models.TopicMessages) \
             .filter(models.TopicMessages.id == message_id) \
             .first()

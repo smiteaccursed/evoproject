@@ -60,7 +60,7 @@ async def get_user_books(id: Optional[UUID]=None, db: Session = Depends(get_db),
 
 ## Создание новой книги
 
-@app.post("/book", 
+@app.post("/books", 
           response_model=Book,
           summary='Добавляет книгу в базу')
 
