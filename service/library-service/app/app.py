@@ -48,7 +48,7 @@ app = FastAPI(
 
 ## Список книг
 
-@app.get("/books/", 
+@app.get("/books/{userID}", 
         summary='Возвращает список книг', 
         response_model=list[Book])
 async def get_user_books(id: Optional[UUID]=None, db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> typing.Iterable[Book] :
@@ -94,8 +94,8 @@ async def delete_book(bookID: int, db:Session=Depends(get_db)) -> Book :
 
 ## Удаление книг 
 
-@app.delete("", 
-            summary='Удаляет книги')
+@app.delete("/books/{userID}", 
+            summary='Удаляет книги пользователя')
 
 async def delete_user_books(id: Optional[UUID] = None, db:Session=Depends(get_db)) -> Book :
     if id is not None:
