@@ -35,11 +35,9 @@ Documentation: `http://localhost:5000/docs`
 ## Api
 | Method | Route           | Description        |
 |--------|-----------------|--------------------|
-| GET    | `/books/`       | Get all books     |
 | POST   | `/books/`       | Add new book       |
 | GET    | `/books/{bookID}` | Get book by ID    |
 | DELETE | `/books/{bookID}` | Delete book by ID |
 | PUT    | `/books/{bookID}` | Update book_info by ID |
-| DELETE |  | Delete all books |
-| GET    | `/userbooks/{userID}` | Get user book by ID    |
-| DELETE |  `/userbooks/{userID}`| Delete user book by ID |
+| GET    | `/books/{userID}` | Get user book by ID    |
+| DELETE |  `/books/{userID}`| Delete user book by ID |
