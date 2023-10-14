@@ -47,6 +47,7 @@ services:
     environment:
       PG_DSN: ${PG_DSN}
 
+      
   forum-service:
     image: forum
     ports:

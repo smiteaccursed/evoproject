@@ -5,7 +5,7 @@ from pydantic import Field, PostgresDsn
 
 class Config(BaseSettings):
     pg_dsn: PostgresDsn = Field(
-        default = 'postgres://user:pass@localhost:5432/foobar',
+        default='postgresql://user:pass@localhost:5432/foobar?schema=schema_name',
     )
 
     @classmethod
