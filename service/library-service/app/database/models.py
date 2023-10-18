@@ -7,9 +7,10 @@ class BookStatus(enum.Enum):
     wanted=1
     available=2
     readed=3
-class Book(Base):
-    __tablename__ = "library"
 
+class Book(Base):
+    __tablename__ = "library"  
+    __table_args__ = {'schema':  "library"}
     id = Column(Integer, primary_key=True, index=True, unique=True)
     user_id=Column(UUID(as_uuid=True))
     name = Column(String)
