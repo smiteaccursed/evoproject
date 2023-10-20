@@ -2,7 +2,11 @@
 # Если без докера
 ### Установка
 - Установка зависимостей: `pip install -r requirements.txt `
-- Подготовка .env файла: `PG_DSN = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"`
+- Подготовка .env файла:
+- `PG_DSN = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"`
+- `JWT_SECRET=JWT_SECRET`
+- `RESET_PASSWORD_TOKEN_SECRET=RESET_PASSWORD_TOKEN_SECRET`
+- `VERIFICATION_TOKEN_SECRET=VERIFICATION_TOKEN_SECRET `
 
 ### Запуск с использование файла конфигурации .env
 
@@ -28,7 +32,7 @@
 uvicorn app.app:app --port 5020 --reload
 # Если через docker
 ## Building 
-`docker build -t "user" .`
+`docker build -t "users" .`
 ## Запуск
 Для запуска перейдите в папку `deploy` и проследуйте инструкциям
 ## Документация
