@@ -56,7 +56,7 @@ services:
       PG_DSN: ${PG_DSN}
 
   user-service:
-    image: forum
+    image: users
     ports:
       - "5020:5000"
     environment:
