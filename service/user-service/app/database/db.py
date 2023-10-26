@@ -29,8 +29,7 @@ class Database_Initializer():
             if not (await connection.run_sync(check_schema)):
                 await connection.execute(CreateSchema(schema))
                 await connection.commit()
-        async with engine.begin() as connection2:
-            await connection2.run_sync(self.base.metadata.create_all)
+                await connection.run_sync(self.base.metadata.create_all)
     
     @property
     def async_session_maker(self):

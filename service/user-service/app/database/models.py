@@ -9,8 +9,6 @@ from app.database import db
 
 class Group(db.BASE):
     __tablename__  = 'group'
-    __table_args__ = {'schema':  db.SCHEMA}
-
     id = Column(Integer, primary_key=True , autoincrement=True, index=True)
     name = Column(String)
 
@@ -19,7 +17,7 @@ class User(SQLAlchemyBaseUserTableUUID, db.BASE):
 
     nickname = Column(String(length=128), nullable=True)
     bio = Column(String(length=1024), nullable=True)
-    group_id = mapped_column(ForeignKey(f"{db.SCHEMA}.group.id"))
+    group_id = mapped_column(ForeignKey("group.id"))
     group = relationship("Group", uselist=False)
 
 

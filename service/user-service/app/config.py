@@ -7,9 +7,9 @@ from pydantic import Field, PostgresDsn, SecretStr
 
 class Config(BaseSettings):
     PG_DSN: PostgresDsn = Field(
-        default='postgresql+asyncpg://book:book@127.0.0.1:5432/library',
-        env='POSTGRES_DSN',
-        alias='POSTGRES_DSN'
+        default = 'postgresql+asyncpg://user:pass@localhost:5432/foobar',
+        env='PG_DSN',
+        alias='PG_DSN'
     )
 
     jwt_secret: SecretStr = Field(

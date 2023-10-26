@@ -1,10 +1,10 @@
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
 from typing import Tuple, Type
-from pydantic import Field, PostgresDsn
+from pydantic import Field, MongoDsn
 
 class Config(BaseSettings):
-    pg_dsn: PostgresDsn = Field(
-        default='postgresql://user:pass@localhost:5432/foobar',
+    mongo_dsn: MongoDsn = Field(
+        default='mongodb://user:pass@host:27017/complaint',
     )
 
     @classmethod
