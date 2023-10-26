@@ -17,16 +17,16 @@ volumes:
 
 services:
   mongo:
-    image: mongo:6.0
+    image: mongo:7.0
     volumes:
       - mongo-data:/data/db
       - ./mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     ports:
       - "27017:27017"
-      - "27018:27018"
-      - "27019:27019"
     environment:
-      - MONGO_INITDB_DATABASE=book-forum
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
 
   postgresql:
     image: postgres:12
@@ -41,23 +41,48 @@ services:
       - 5432:5432
 
   library-service:
-    image: library
+    build:
+      context: ../service/library-service
+      dockerfile: ./Dockerfile
     ports:
       - "5000:5000"
     environment:
       PG_DSN: ${PG_DSN}
-
+    depends_on:
+      - postgresql
       
   forum-service:
-    image: forum
+    build:
+      context: ../service/forum-service
+      dockerfile: ./Dockerfile
     ports:
       - "5010:5000"
     environment:
       PG_DSN: ${PG_DSN}
+    depends_on:
+      - postgresql
 
   user-service:
-    image: users
+    build:
+      context: ../service/user-service
+      dockerfile: ./Dockerfile
     ports:
       - "5020:5000"
     environment:
-      PG_DSN: ${PG_DSN}
+      PG_DSN: ${PG_ADSN}
+      JWT_SECRET: ${JWT_SECRET}
+      RESET_PASSWORD_TOKEN_SECRET: ${RESET_PASSWORD_TOKEN_SECRET}
+      VERIFICATION_TOKEN_SECRET: ${VERIFICATION_TOKEN_SECRET}
+    depends_on:
+      - postgresql
+
+  complaint-service:
+    build:
+      context: ../service/complaint-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "5030:5000"
+    environment:
+      MONGO_DSN: ${MONGO_DSN}
+    depends_on:
+      - mongo
