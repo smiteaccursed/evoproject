@@ -38,17 +38,17 @@ app = FastAPI(
     version='0.0.1',
     title='Forum service'
 )
-
+tag_name="forum"
 ## МЕТОДЫ ВЕТОК 
 ## все топики
-@app.get("/topics", summary="Возвращает список всех веток",response_model=list[Topic])
+@app.get("/topics", summary="Возвращает список всех веток",response_model=list[Topic],tags=[tag_name])
 async def get_topics(db:Session=Depends(get_db), skip: int = 0, limit: int = 100):
     return crud.get_topics(db, skip, limit)
 
 
 ##топик по id
-@app.get("/topics/{topicID}", 
-         summary='Получение топика по ID'
+@app.get("/topics/TID/{topicID}", 
+         summary='Получение топика по ID',tags=[tag_name]
 )
 async def get_topic_info(topicID: int, db: Session = Depends(get_db)) -> Topic :
     topic = crud.get_topic_by_id(db, topicID)
@@ -57,8 +57,8 @@ async def get_topic_info(topicID: int, db: Session = Depends(get_db)) -> Topic :
     return JSONResponse(status_code=404, content={"message": "Topic not found"})
 
 ##удаление топика 
-@app.delete("/topics/{topicID}", 
-            summary='Удаляет топик из базы по ID'
+@app.delete("/topics/TID/{topicID}", 
+            summary='Удаляет топик из базы по ID',tags=[tag_name]
 )
 async def delete_topic(topicID: int, db: Session = Depends(get_db)) -> Topic :
     if crud.remove_topic_by_id(db, topicID):
@@ -66,8 +66,8 @@ async def delete_topic(topicID: int, db: Session = Depends(get_db)) -> Topic :
     return JSONResponse(status_code=404, content={"message": "Topic not found"})
 
 ##обновление топика
-@app.put("/topics/{topicID}", 
-         summary='Обновляет топика по ID'
+@app.put("/topics/TID/{topicID}", 
+         summary='Обновляет топика по ID',tags=[tag_name]
 )
 async def update_topic(topicID: int, topicbase: TopicUpdate, db: Session = Depends(get_db)) -> Topic :
     topic = crud.update_topic(db, topicID, topicbase)
@@ -76,14 +76,14 @@ async def update_topic(topicID: int, topicbase: TopicUpdate, db: Session = Depen
     return JSONResponse(status_code=404, content={"message": "Topic not found"})
 
 ## добавление топика
-@app.post("/topics", response_model=Topic, summary='Добавляет ветку')
+@app.post("/topics", response_model=Topic, summary='Добавляет ветку',tags=[tag_name])
 async def add_topic(topic:TopicBase, db:Session=Depends(get_db))->Topic:
     return crud.create_topic(db, topic)
 
 ##__________________##
 ## МЕТОДЫ СООБЩЕНИЙ ##
 
-@app.post("/topics/{topicID}/message", summary='Отправка сообщения в топик')
+@app.post("/topics/message/{topicID}", summary='Отправка сообщения в топик',tags=[tag_name])
 
 async def send_message(topicID: int, topic_message:TopicMessageCreate, db: Session = Depends(get_db)) ->TopicMessage:
     topic=crud.get_topic_by_id(db, topicID)
@@ -97,7 +97,7 @@ async def send_message(topicID: int, topic_message:TopicMessageCreate, db: Sessi
 ## получение
 @app.get("/messages/{messageID}", 
          summary='Получить сообщение по id',
-         response_model=TopicMessage,
+         response_model=TopicMessage,tags=[tag_name]
 )
 async def get_message_by_id(messageID: int, db: Session = Depends(get_db)) -> TopicMessage :
     message = crud.get_messages(db, messageID)
@@ -106,7 +106,7 @@ async def get_message_by_id(messageID: int, db: Session = Depends(get_db)) -> To
     return JSONResponse(status_code=404, content={"message": "Message not found"})
 ## обновление 
 @app.put("/messages/{messageID}", 
-         summary='Обновляет сообщение по его ID'
+         summary='Обновляет сообщение по его ID',tags=[tag_name]
 )
 async def update_message(messageID: int, messagebase: TopicMessageBase, db: Session = Depends(get_db))  :
     status = crud.update_message(db, messageID, messagebase)

@@ -14,6 +14,12 @@ volumes:
       o: bind
       type: none
       device: ./postgresql/data
+  policy-enforcement-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./policy-enforcement-service
 
 services:
   mongo:
@@ -56,18 +62,17 @@ services:
       context: ../service/forum-service
       dockerfile: ./Dockerfile
     ports:
-      - "5010:5000"
+      - "5010:5010"
     environment:
       PG_DSN: ${PG_DSN}
     depends_on:
       - postgresql
-
   user-service:
     build:
       context: ../service/user-service
       dockerfile: ./Dockerfile
     ports:
-      - "5020:5000"
+      - "5020:5020"
     environment:
       PG_DSN: ${PG_ADSN}
       JWT_SECRET: ${JWT_SECRET}
@@ -81,8 +86,20 @@ services:
       context: ../service/complaint-service
       dockerfile: ./Dockerfile
     ports:
-      - "5030:5000"
+      - "5030:5030"
     environment:
       MONGO_DSN: ${MONGO_DSN}
     depends_on:
       - mongo
+  
+  policy-enforcement-service:
+    build:
+      context: ../service/policy-enforcement-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "5100:5100"
+    volumes:
+      - policy-enforcement-data:/mnt/
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      POLICIES_CONFIG_PATH: ${POLICIES_CONFIG_PATH}

@@ -47,10 +47,10 @@ app = FastAPI(
 )
 
 ## Список книг
-
-@app.get("/books/{userID}", 
+tag_name="library"
+@app.get("/books/UID/{userID}", 
         summary='Возвращает список книг', 
-        response_model=list[Book])
+        response_model=list[Book],tags=[tag_name])
 async def get_user_books(id: Optional[UUID]=None, db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> typing.Iterable[Book] :
     if id is not None:
         return crud.get_user_books(id, db, skip, limit)
@@ -62,15 +62,15 @@ async def get_user_books(id: Optional[UUID]=None, db: Session = Depends(get_db),
 
 @app.post("/books", 
           response_model=Book,
-          summary='Добавляет книгу в базу')
+          summary='Добавляет книгу в базу',tags=[tag_name])
 
 async def add_book(book: BookBase, db:Session=Depends(get_db)) -> Book :
     return crud.create_book(db, book)
 
 ## книга по ID
 
-@app.get("/books/{bookID}", 
-         summary='Возвращает информацию о книге')
+@app.get("/books/BID/{bookID}", 
+         summary='Возвращает информацию о книге',tags=[tag_name])
 
 async def get_book_info(bookID: int, db: Session=Depends(get_db)) -> Book :
     book = crud.get_book_ID(db, bookID)
@@ -82,8 +82,8 @@ async def get_book_info(bookID: int, db: Session=Depends(get_db)) -> Book :
 
 ## удаление
 
-@app.delete("/books/{bookID}", 
-            summary='Удаляет книгу из базы')
+@app.delete("/books/BID/{bookID}", 
+            summary='Удаляет книгу из базы',tags=[tag_name])
 
 async def delete_book(bookID: int, db:Session=Depends(get_db)) -> Book :
     if crud.delete_book(db, bookID):
@@ -94,8 +94,8 @@ async def delete_book(bookID: int, db:Session=Depends(get_db)) -> Book :
 
 ## Удаление книг 
 
-@app.delete("/books/{userID}", 
-            summary='Удаляет книги пользователя')
+@app.delete("/books/UID/{userID}", 
+            summary='Удаляет книги пользователя',tags=[tag_name])
 
 async def delete_user_books(id: Optional[UUID] = None, db:Session=Depends(get_db)) -> Book :
     if id is not None:
@@ -111,7 +111,7 @@ async def delete_user_books(id: Optional[UUID] = None, db:Session=Depends(get_db
 ## Обновление информации о книге 
 
 @app.put("/books/{bookID}", 
-         summary='Обновляет информацию о книге')
+         summary='Обновляет информацию о книге',tags=[tag_name])
 
 async def update_book(bookID: int, bookbase: BookUpdate, db:Session=Depends(get_db)) -> Book :
     book = crud.update_book(db, bookID, bookbase)

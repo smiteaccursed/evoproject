@@ -35,11 +35,11 @@ users.configure_secrets(
 users.include_routers(app)
 
 
-
+tag_name="group"
 
 @app.post(
     "/groups", status_code=201, response_model=users.schemas.GroupRead,
-    summary='Создает новую группу пользователей'
+    summary='Создает новую группу пользователей',tags=[tag_name]
 )
 async def add_group(
         group: users.schemas.GroupCreate,
@@ -52,7 +52,7 @@ async def add_group(
 @app.get(
     "/groups",
     summary='Возвращает список групп пользователей',
-    response_model=list[users.schemas.GroupRead]
+    response_model=list[users.schemas.GroupRead],tags=[tag_name]
 )
 async def get_group_list(
         session: AsyncSession = Depends(database.get_async_session),
@@ -63,7 +63,7 @@ async def get_group_list(
     return await users.crud.get_groups(session, skip, limit)
 
 
-@app.get("/groups/{group_id}", summary='Возвращает информацию о группе пользователей')
+@app.get("/groups/{group_id}", summary='Возвращает информацию о группе пользователей',tags=[tag_name])
 async def get_group_info(
         group_id: int, session: AsyncSession = Depends(database.get_async_session)
     ) -> users.schemas.GroupRead :
@@ -74,7 +74,7 @@ async def get_group_info(
     return JSONResponse(status_code=404, content={"message": "Item not found"})
 
 
-@app.put("/groups/{group_id}", summary='Обновляет информацию о группе пользователей')
+@app.put("/groups/{group_id}", summary='Обновляет информацию о группе пользователей',tags=[tag_name])
 async def update_group(
         group_id: int, 
         group: users.schemas.GroupUpdate,
@@ -87,7 +87,7 @@ async def update_group(
     return JSONResponse(status_code=404, content={"message": "Item not found"})
 
 
-@app.delete("/groups/{group_id}", summary='Удаляет информацию о группе пользователей')
+@app.delete("/groups/{group_id}", summary='Удаляет информацию о группе пользователей',tags=[tag_name])
 async def delete_device(
         group_id: int, 
         session: AsyncSession = Depends(database.get_async_session)

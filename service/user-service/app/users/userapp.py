@@ -4,17 +4,21 @@ from fastapi import Depends, FastAPI
 from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import (AuthenticationBackend,
                                           BearerTransport, JWTStrategy)
-
+from typing import Any, Coroutine
 from app.database import models
 from . import config, manager, schemas
-
+from fastapi_users.jwt import generate_jwt
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
-
+class CustomJWTStrategy(JWTStrategy):
+    async def write_token(self, user: Any) -> Coroutine[Any, Any, str]:
+        data = {"sub": str(user.id), "aud": self.token_audience, "group_id": user.group_id}
+        return generate_jwt(
+            data, self.encode_key, self.lifetime_seconds, algorithm=self.algorithm
+        )
 def get_jwt_strategy(
         secret_provider: config.UserSecretConfig = Depends(config.user_secret_generator)
-    ) -> JWTStrategy:
-
-    return JWTStrategy(secret=secret_provider.jwt_secret, lifetime_seconds=3600)
+   ) -> JWTStrategy:
+    return CustomJWTStrategy(secret=secret_provider.jwt_secret, lifetime_seconds=3600)
 
 
 auth_backend = AuthenticationBackend(
