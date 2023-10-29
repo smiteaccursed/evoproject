@@ -18,7 +18,7 @@ class User(SQLAlchemyBaseUserTableUUID, db.BASE):
     nickname = Column(String(length=128), nullable=True)
     bio = Column(String(length=1024), nullable=True)
     group_id = mapped_column(ForeignKey("group.id"))
-    ban=Column(Boolean)
+    ban=Column(Integer)
     group = relationship("Group", uselist=False)
 
 

@@ -59,20 +59,20 @@ policies:
     resource: /complaints*
     methods: (GET)|(POST)|(PUT)|(DELETE)
 
-  # FORUM
+ # FORUM
   - service: forum-service
-    rule: r.sub.group_id > 1 && r.sub.ban == 0
+    rule: (r.sub.group_id > 0) && (r.sub.ban == 0)
     resource: /topic*
     methods: (POST)|(GET)
   - service: forum-service
-    rule: r.sub.group_id > 1 && r.sub.ban == 0
+    rule: (r.sub.group_id > 0) && (r.sub.ban == 0)
     resource: /messages*
     methods: (POST)|(GET)
   - service: forum-service
-    rule: r.sub.group_id == 1
+    rule: (r.sub.group_id == 1) && (r.sub.ban == 0)
     resource: /topic*
     methods: (GET)|(POST)|(PUT)|(DELETE)
   - service: forum-service
-    rule: r.sub.group_id == 1
+    rule: (r.sub.group_id == 1) && (r.sub.ban == 0)
     resource: /messages*
     methods: (GET)|(POST)|(PUT)|(DELETE)

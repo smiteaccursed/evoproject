@@ -29,19 +29,19 @@ class UserRead(schemas.BaseUser[uuid.UUID]):
     nickname: str | None = None
     bio: str | None = None
     group_id: int | None = None
-    ban:bool| None=None
+    ban:int| None=None
 
 
 class UserCreate(schemas.BaseUserCreate):
     nickname: str = None
     bio: str = None
     group_id: int = None
-    ban:bool = False
+    ban:int = False
 
 
 class UserUpdate(schemas.BaseUserUpdate):
     nickname: str = None
     bio: str = None
     group_id: int | None = None
-    ban:bool = None
+    ban:int = None
     
