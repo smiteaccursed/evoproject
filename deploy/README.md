@@ -16,8 +16,14 @@ RESET_PASSWORD_TOKEN_SECRET=RESET_PASSWORD_TOKEN_SECRET
 VERIFICATION_TOKEN_SECRET=VERIFICATION_TOKEN_SECRET
 PG_ADSN=postgresql+asyncpg://логин:пароль@Локальный IP адресс:порт/название БД
 POLICIES_CONFIG_PATH=/mnt/policies.yaml
-
+RABBITMQ_DEFAULT_USER=admin
+RABBITMQ_DEFAULT_PASS=pass
+RABBITMQ_DSN=amqp://admin:pass@rabbitmq:5672/
+TELEGRAM_CHAT_IDS=[YOUR_ID]
+TELEGRAM_BOT_TOKEN=TOKER
 ```
+Готовый токен телеграм бота `6528915216:AAEBv-O5X1itJWQD0YDAwHfNpC_BHPkPbJk ` 
+
 3. Настройка `docker-compose.yaml` при необходимости
 4. Для запуска
 ```ini
