@@ -1,12 +1,12 @@
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
 from typing import Tuple, Type
-from pydantic import Field, MongoDsn, SecretStr
+from pydantic import Field, MongoDsn, SecretStr, AmqpDsn
 
 class Config(BaseSettings):
     mongo_dsn: MongoDsn = Field(
         default='mongodb://user:pass@host:27017/complaint',
     )
-    RABBITMQ_DSN: SecretStr = Field(alias="RABBITMQ_DSN")
+    RABBITMQ_DSN: AmqpDsn = Field(alias="RABBITMQ_DSN")
 
     @classmethod
     def settings_customise_sources(

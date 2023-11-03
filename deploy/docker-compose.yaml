@@ -46,6 +46,19 @@ services:
     ports:
       - 5432:5432
 
+  rabbitmq:
+    image: rabbitmq:3.13.0-rc.1-management-alpine
+    hostname: rabbitmq
+    restart: always
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   library-service:
     build:
       context: ../service/library-service
@@ -89,6 +102,7 @@ services:
       - "5030:5030"
     environment:
       MONGO_DSN: ${MONGO_DSN}
+      RABBITMQ_DSN: ${RABBITMQ_DSN}
     depends_on:
       - mongo
   
@@ -103,3 +117,14 @@ services:
     environment:
       JWT_SECRET: ${JWT_SECRET}
       POLICIES_CONFIG_PATH: ${POLICIES_CONFIG_PATH}
+
+  telegram-service:
+    build:
+      context: ../service/telegram-service
+      dockerfile: ./Dockerfile
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBITMQ_DSN: ${RABBITMQ_DSN}
+      TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}

@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO,
                     format="[%(levelname)s][%(name)s]")
 
 cfg: config.Config = config.load_config(_env_file='.env')
-tque = botqueue(cfg.RABBITMQ_DSN.get_secret_value())
+tque = botqueue(cfg.RABBITMQ_DSN.unicode_string())
 
 logger.info("Service database loading...")
 MongoDB(mongo_dsn=cfg.mongo_dsn.unicode_string())
