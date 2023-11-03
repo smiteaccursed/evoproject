@@ -1,18 +1,19 @@
 import logging
-from fastapi import FastAPI, UploadFile
-from typing import List, Annotated
+from fastapi import FastAPI
+from typing import List
 from uuid import UUID
 from . import config, crud
 from .database import MongoDB, ComplaintStatusEnum
 from .schemas import Complaint, ComplaintCreate
 from fastapi.responses import JSONResponse
-
+from . broker import botqueue
 
 logger = logging.getLogger("telegram-service")
 logging.basicConfig(level=logging.INFO, 
                     format="[%(levelname)s][%(name)s]")
 
 cfg: config.Config = config.load_config(_env_file='.env')
+tque = botqueue(cfg.RABBITMQ_DSN.get_secret_value())
 
 logger.info("Service database loading...")
 MongoDB(mongo_dsn=cfg.mongo_dsn.unicode_string())
@@ -43,7 +44,7 @@ async def get_complaint_by_user(UID: UUID):
 
 @app.post("/complaints/",summary='Добавление новой жалобы', response_model=Complaint,tags=[tag_name])
 async def add_complaint(complaint:ComplaintCreate):
-    return crud.create_complaint(complaint)
+    return crud.create_complaint(complaint, tque)
 
 @app.put("/complaints/{CID}",summary='Обновление жалобы', response_model=Complaint,tags=[tag_name])
 async def update_complaint(CID:str, status:ComplaintStatusEnum ):

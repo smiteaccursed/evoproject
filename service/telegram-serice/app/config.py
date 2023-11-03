@@ -1,13 +1,12 @@
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
-from typing import Tuple, Type
-from pydantic import Field, MongoDsn, SecretStr
+from typing import Tuple, Type, List
+from pydantic import Field, AmqpDsn, SecretStr
+
 
 class Config(BaseSettings):
-    mongo_dsn: MongoDsn = Field(
-        default='mongodb://user:pass@host:27017/complaint',
-    )
-    RABBITMQ_DSN: SecretStr = Field(alias="RABBITMQ_DSN")
-
+    RABBITMQ_DSN: AmqpDsn = Field(alias="RABBITMQ_DSN")
+    TELEGRAM_BOT_TOKEN: SecretStr = Field(description="Telegram bot token registered through BotFather")
+    TELEGRAM_USER_IDS: List = Field(alias="TELEGRAM_USER_IDS")
     @classmethod
     def settings_customise_sources(
         cls,

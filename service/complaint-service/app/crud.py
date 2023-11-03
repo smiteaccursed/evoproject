@@ -1,7 +1,7 @@
 from .database import models
 import typing
 from uuid import UUID
-from . import schemas
+from . import schemas, broker
 
 
 def get_complaints( stat:models.ComplaintStatusEnum
@@ -18,10 +18,11 @@ def get_complaint_ID(
     return comp
 
 def create_complaint(
-        complaint: schemas.ComplaintCreate
+        complaint: schemas.ComplaintCreate, botq:broker.botqueue
     ) -> models.Complaint: 
     new_complaint=models.Complaint(**complaint.model_dump(),
                                    status=models.ComplaintStatusEnum.OPEN)
+    botq.send_message(f"Новая жалоба c заголовком \"{complaint.header}\" создана. \n На пользователя: {complaint.user_id}")
     new_complaint.save()
     return new_complaint
 
