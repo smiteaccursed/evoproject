@@ -1,0 +1,2 @@
+# Запуск
+python -m unittest
