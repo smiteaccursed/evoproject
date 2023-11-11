@@ -7,7 +7,7 @@ from broker import botqueue
 
 import telebot
 # setup logging
-logger = logging.getLogger("telegram-notify-service")
+logger = logging.getLogger("telegram-service")
 logging.basicConfig(
     level=logging.INFO,            
     format="[%(levelname)s][%(name)s][%(filename)s, line %(lineno)d]: %(message)s"
@@ -18,7 +18,6 @@ tque = botqueue(app_config.RABBITMQ_DSN.unicode_string())
     
 def process_message(body, message: Message):
     logger.info(f"Recieved message {message} with content: {body}")
-    print(body)
     try:
         for uid in app_config.TELEGRAM_USER_IDS:
             bot.send_message(chat_id=uid, text=body)

@@ -22,8 +22,8 @@ def create_complaint(
     ) -> models.Complaint: 
     new_complaint=models.Complaint(**complaint.model_dump(),
                                    status=models.ComplaintStatusEnum.OPEN)
-    botq.send_message(f"Новая жалоба c заголовком \"{complaint.header}\" создана. \n На пользователя: {complaint.user_id}")
     new_complaint.save()
+    botq.send_message(f"Новая жалоба c заголовком \"{complaint.header}\" создана. \n На пользователя: {complaint.user_id}")
     return new_complaint
 
 def get_complaint_by_user( uid:UUID) -> typing.List[schemas.Complaint]:

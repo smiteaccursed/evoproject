@@ -8,19 +8,26 @@ volumes:
       type: none
       device: ./mongo/data
 
+  user-service-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./user-service
+
   postgresql-data:
     driver: local
     driver_opts:
       o: bind
       type: none
       device: ./postgresql/data
+
   policy-enforcement-data:
     driver: local
     driver_opts:
       o: bind
       type: none
       device: ./policy-enforcement-service
-
 services:
   mongo:
     image: mongo:7.0
@@ -50,8 +57,6 @@ services:
     image: rabbitmq:3.13.0-rc.1-management-alpine
     hostname: rabbitmq
     restart: always
-    volumes:
-      - ./rabbitmq:/var/lib/rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
@@ -80,6 +85,7 @@ services:
       PG_DSN: ${PG_DSN}
     depends_on:
       - postgresql
+
   user-service:
     build:
       context: ../service/user-service
@@ -91,8 +97,11 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       RESET_PASSWORD_TOKEN_SECRET: ${RESET_PASSWORD_TOKEN_SECRET}
       VERIFICATION_TOKEN_SECRET: ${VERIFICATION_TOKEN_SECRET}
+      DEFAULT_GROUPS_CONFIG_PATH: ${DEFAULT_GROUPS_CONFIG_PATH}
     depends_on:
       - postgresql
+    volumes:
+      - user-service-data:/mnt/
 
   complaint-service:
     build:
@@ -117,6 +126,12 @@ services:
     environment:
       JWT_SECRET: ${JWT_SECRET}
       POLICIES_CONFIG_PATH: ${POLICIES_CONFIG_PATH}
+    depends_on:
+      - telegram-service
+      - complaint-service
+      - user-service
+      - forum-service
+      - library-service
 
   telegram-service:
     build:
@@ -128,3 +143,11 @@ services:
       RABBITMQ_DSN: ${RABBITMQ_DSN}
       TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+  testing:
+    build:
+      context: ../tests
+      dockerfile: ./Dockerfile
+    depends_on:
+      - policy-enforcement-service
+    environment:
+      PG_DSN: ${PG_DSN}

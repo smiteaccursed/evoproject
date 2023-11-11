@@ -1,5 +1,5 @@
 import typing, logging
-
+import json
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 
@@ -104,3 +104,19 @@ async def on_startup():
     await database.DB_INITIALIZER.init_db(
         cfg.PG_DSN.unicode_string()
     )
+
+@app.on_event("startup")
+async def on_startup():
+    await database.DB_INITIALIZER.init_db(
+        cfg.PG_DSN.unicode_string()
+    )
+
+    groups = []
+    with open(cfg.default_groups_config_path) as f:
+        groups = json.load(f)
+
+    async for session in database.get_async_session():
+        for group in groups:
+            await users.crud.upsert_group(
+                session, users.schemas.GroupUpsert(**group)
+            )

@@ -1,9 +1,6 @@
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
-
-
 from typing import Tuple, Type
-
-from pydantic import Field, PostgresDsn, SecretStr
+from pydantic import Field, PostgresDsn, SecretStr, FilePath
 
 class Config(BaseSettings):
     PG_DSN: PostgresDsn = Field(
@@ -29,6 +26,15 @@ class Config(BaseSettings):
         env='VERIFICATION_TOKEN_SECRET',
         alias='VERIFICATION_TOKEN_SECRET'        
     )
+    default_groups_config_path: FilePath = Field(
+        default='default-groups.json',
+        env='DEFAULT_GROUPS_CONFIG_PATH',
+        alias='DEFAULT_GROUPS_CONFIG_PATH'
+    )
+
+    class Config:
+        env_file = ".env"
+        extra = 'allow'
 
     @classmethod
     def settings_customise_sources(

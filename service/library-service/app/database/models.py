@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, JSON, Enum
+from sqlalchemy import Column, Integer, String, Enum, ARRAY
 from sqlalchemy.dialects.postgresql import UUID
 
 from .db import Base
@@ -17,8 +17,8 @@ class Book(Base):
     status = Column(Enum(BookStatus), default=BookStatus.wanted)
     rating=Column(Integer,info={'min': 0, 'max': 10})
 
-    genres=Column(JSON)
+    genres=Column(ARRAY(String))
     type=Column(String)
-    authors=Column(JSON)
+    authors=Column(ARRAY(String))
     series=Column(String)
-    about=Column(JSON)
+    about=Column(String)

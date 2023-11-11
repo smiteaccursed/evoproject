@@ -10,7 +10,7 @@ from app.database import db
 class Group(db.BASE):
     __tablename__  = 'group'
     id = Column(Integer, primary_key=True , autoincrement=True, index=True)
-    name = Column(String)
+    name = Column(String, unique=True, index=True)
 
 class User(SQLAlchemyBaseUserTableUUID, db.BASE):
     __table_args__ = {'schema':  db.SCHEMA}
