@@ -5,9 +5,8 @@ from ..database.models import BookStatus
 from uuid import UUID
 class BookBase(BaseModel):
     '''
-    База книги. Стоит ли разделить на несколько таблиц ?
+    База книги
     '''
-    #id: int = Field(title='Идентификатор книги', default=None)
     user_id:UUID= Field(title='ID пользователя, добавившего книгу')
     name:str = Field(title='Название книги')
     rating: int = Field(title='Оценка книги', ge=0, le=10)  # Ограничение оценки от 0 до 10
