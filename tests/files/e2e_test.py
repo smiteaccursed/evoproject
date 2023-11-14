@@ -5,7 +5,6 @@ import typing
 import pydantic
 
 ENTRYPOINT = "http://forum-service:5010"
-DATABASE_DSN = "postgresql://book:book@26.255.132.24:5432/library"
 ACCESS_DENIED_MESSAGE = {"detail":"Not Found"}
 
 
@@ -57,8 +56,8 @@ class TestForum(unittest.TestCase):
             response = requests.delete(f"{ENTRYPOINT}/topics/TID/{top.id}")
             self.assertEqual(response.status_code, 200)
     def test_get_topic_by_id(self):
+        top=self._create_topic(name="smite")
         try:
-            top=self._create_topic(name="smite")
             self.assertIsInstance(top, Topic)
             self.assertEqual(top.name, "smite")
             response = requests.get(f"{ENTRYPOINT}/topics/TID/{top.id}")
@@ -67,14 +66,13 @@ class TestForum(unittest.TestCase):
             response = requests.delete(f"{ENTRYPOINT}/topics/TID/{top.id}")
             self.assertEqual(response.status_code, 200)
     def test_update_topic(self):
+        top=self._create_topic(name="smite")
         try:
-            top=self._create_topic(name="smite")
             self.assertIsInstance(top, Topic)
             self.assertEqual(top.name, "smite")
             data={"name":"asdasd", 
                   "creator_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}
             response = requests.put(f"{ENTRYPOINT}/topics/TID/{top.id}", json=data)
-
             self.assertEqual(response.status_code, 200)
         finally:
             response = requests.delete(f"{ENTRYPOINT}/topics/TID/{top.id}")

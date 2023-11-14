@@ -148,6 +148,4 @@ services:
       context: ../tests
       dockerfile: ./Dockerfile
     depends_on:
-      - policy-enforcement-service
-    environment:
-      PG_DSN: ${PG_DSN}
+      - library-service
