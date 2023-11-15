@@ -47,11 +47,12 @@ services:
       - postgresql-data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_USER: ${POSTGRES_USER}
+      PG_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: /var/lib/postgresql/data/db-files/
     ports:
       - 5432:5432
+      
 
   rabbitmq:
     image: rabbitmq:3.13.0-rc.1-management-alpine
@@ -73,7 +74,10 @@ services:
     environment:
       PG_DSN: ${PG_DSN}
     depends_on:
-      - postgresql
+      postgresql:
+        condition: service_started
+        restart: true
+
       
   forum-service:
     build:
@@ -84,7 +88,9 @@ services:
     environment:
       PG_DSN: ${PG_DSN}
     depends_on:
-      - postgresql
+      postgresql:
+        condition: service_started
+        restart: true
 
   user-service:
     build:
@@ -99,7 +105,9 @@ services:
       VERIFICATION_TOKEN_SECRET: ${VERIFICATION_TOKEN_SECRET}
       DEFAULT_GROUPS_CONFIG_PATH: ${DEFAULT_GROUPS_CONFIG_PATH}
     depends_on:
-      - postgresql
+      postgresql:
+        condition: service_started
+        restart: true
     volumes:
       - user-service-data:/mnt/
 
@@ -132,6 +140,8 @@ services:
       - user-service
       - forum-service
       - library-service
+      - postgresql
+      - rabbitmq
 
   telegram-service:
     build:
@@ -143,9 +153,14 @@ services:
       RABBITMQ_DSN: ${RABBITMQ_DSN}
       TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+
   testing:
     build:
       context: ../tests
       dockerfile: ./Dockerfile
+    environment:
+      PG_DSN: ${PG_DSN}
     depends_on:
-      - library-service
+      policy-enforcement-service:
+        condition: service_started
+        restart: true
