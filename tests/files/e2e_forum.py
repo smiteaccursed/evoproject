@@ -26,7 +26,7 @@ class TestCommonFunctionality(unittest.TestCase):
         pass
 
     def test_service_availability(self):
-        response = requests.get(ENTRYPOINT)
+        response = requests.get(ENTRYPOINT, timeout=10)
         self.assertEqual(response.status_code, 404)
         data = response.json()
         self.assertIsInstance(data, dict)
@@ -37,12 +37,14 @@ class TestForum(unittest.TestCase):
         data={
                 "creator_id": id,
                 "name": name}
-        response = requests.post(f"{ENTRYPOINT}/topics", json=data)
+        response = requests.post(f"{ENTRYPOINT}/topics", json=data,
+            timeout=10)
         self.assertEqual(response.status_code, 200)
         return Topic(**response.json())
     
     def test_get_topics(self):
-        response = requests.get(f"{ENTRYPOINT}/topics")
+        response = requests.get(f"{ENTRYPOINT}/topics",
+            timeout=10)
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertIsInstance(data, list)
@@ -53,17 +55,20 @@ class TestForum(unittest.TestCase):
             self.assertIsInstance(top, Topic)
             self.assertEqual(top.name, "smite")
         finally:
-            response = requests.delete(f"{ENTRYPOINT}/topics/TID/{top.id}")
+            response = requests.delete(f"{ENTRYPOINT}/topics/TID/{top.id}",
+            timeout=10)
             self.assertEqual(response.status_code, 200)
     def test_get_topic_by_id(self):
         top=self._create_topic(name="smite")
         try:
             self.assertIsInstance(top, Topic)
             self.assertEqual(top.name, "smite")
-            response = requests.get(f"{ENTRYPOINT}/topics/TID/{top.id}")
+            response = requests.get(f"{ENTRYPOINT}/topics/TID/{top.id}",
+            timeout=10)
             self.assertEqual(response.status_code, 200)
         finally:
-            response = requests.delete(f"{ENTRYPOINT}/topics/TID/{top.id}")
+            response = requests.delete(f"{ENTRYPOINT}/topics/TID/{top.id}",
+            timeout=10)
             self.assertEqual(response.status_code, 200)
     def test_update_topic(self):
         top=self._create_topic(name="smite")
@@ -72,10 +77,12 @@ class TestForum(unittest.TestCase):
             self.assertEqual(top.name, "smite")
             data={"name":"asdasd", 
                   "creator_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}
-            response = requests.put(f"{ENTRYPOINT}/topics/TID/{top.id}", json=data)
+            response = requests.put(f"{ENTRYPOINT}/topics/TID/{top.id}", json=data,
+            timeout=10)
             self.assertEqual(response.status_code, 200)
         finally:
-            response = requests.delete(f"{ENTRYPOINT}/topics/TID/{top.id}")
+            response = requests.delete(f"{ENTRYPOINT}/topics/TID/{top.id}",
+            timeout=10)
             self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':

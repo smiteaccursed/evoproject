@@ -74,9 +74,7 @@ services:
     environment:
       PG_DSN: ${PG_DSN}
     depends_on:
-      postgresql:
-        condition: service_started
-        restart: true
+      - postgresql
 
       
   forum-service:

@@ -40,7 +40,7 @@ class TestCommonFunctionality(unittest.TestCase):
         pass
 
     def test_service_availability(self):
-        response = requests.get(ENTRYPOINT)
+        response = requests.get(ENTRYPOINT, timeout=10)
         self.assertEqual(response.status_code, 404)
         data = response.json()
         self.assertIsInstance(data, dict)
@@ -72,7 +72,8 @@ class BaseUserTestCase(unittest.TestCase):
             "group_id": group_id
         }   
         try:
-            response = requests.post(f'{ENTRYPOINT}auth/register', json=payload)
+            response = requests.post(f'{ENTRYPOINT}auth/register', json=payload,
+            timeout=10)
             response.raise_for_status()
             self.test_user = User(**response.json())
         except requests.exceptions.HTTPError as exc:
@@ -101,7 +102,8 @@ class BaseUserTestCase(unittest.TestCase):
                 'password': password,
             }
             response = requests.post(
-                f'{ENTRYPOINT}auth/jwt/login', data=data
+                f'{ENTRYPOINT}auth/jwt/login', data=data,
+            timeout=10
             ) 
             response.raise_for_status()
             self.access_token = response.json()['access_token']
@@ -125,7 +127,8 @@ class TestAdminPolicies(BaseUserTestCase):
     def test_get_complaints_list(self):
         self._raise_if_invalid_user()
         response = requests.get(
-            f'{ENTRYPOINT}complaints/by_status/1', headers=self.auth_headers
+            f'{ENTRYPOINT}complaints/by_status/1', headers=self.auth_headers,
+            timeout=10
         )
         self.assertEqual(response.status_code, 200)
         data = response.json()
@@ -141,7 +144,8 @@ class TestUserPolicies(BaseUserTestCase):
     def test_get_complaints_list(self):
         self._raise_if_invalid_user()
         response = requests.get(
-            f'{ENTRYPOINT}complaints/by_status/1', headers=self.auth_headers
+            f'{ENTRYPOINT}complaints/by_status/1', headers=self.auth_headers,
+            timeout=10
         )
         self.assertEqual(response.status_code, 404)
         data = response.json()
@@ -151,7 +155,8 @@ class TestUserPolicies(BaseUserTestCase):
     def test_get_topic_list(self):
         self._raise_if_invalid_user()
         response = requests.get(
-            f'{ENTRYPOINT}topics', headers=self.auth_headers
+            f'{ENTRYPOINT}topics', headers=self.auth_headers,
+            timeout=10
         )
         self.assertEqual(response.status_code, 200)
         data = response.json()
@@ -167,7 +172,8 @@ class TestBanPolicies(BaseUserTestCase):
     def test_get_topic_list(self):
         self._raise_if_invalid_user()
         response = requests.get(
-            f'{ENTRYPOINT}/topics', headers=self.auth_headers
+            f'{ENTRYPOINT}/topics', headers=self.auth_headers,
+            timeout=10
         )
         self.assertEqual(response.status_code, 404)
         data = response.json()
