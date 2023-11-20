@@ -3,18 +3,18 @@
 1. Создайте `.env` файл в текущей директории
 2. Заполните поля в нем
 ```ini
-POSTGRES_PASSWORD=пароль
-POSTGRES_USER=логин
-POSTGRES_DB=название БД
-PG_DSN=postgresql://логин:пароль@Локальный IP адресс:порт/название БД
-MONGO_USER=логин
-MONGO_DB=название
-MONGO_PASSWORD=пароль
-MONGO_DSN=mongodb://логин:пароль@Локальный IP адресс:порт/название БД
+POSTGRES_PASSWORD=userpass
+POSTGRES_USER=user
+POSTGRES_DB=dbname
+PG_DSN=postgresql://user:userpass@localhost:port/dbname
+MONGO_USER=mongouser
+MONGO_DB=mongoname
+MONGO_PASSWORD=mongopass
+MONGO_DSN=mongodb://mongouser:mongopass@localhost:port/mongoname
 JWT_SECRET=JWT_SECRET
 RESET_PASSWORD_TOKEN_SECRET=RESET_PASSWORD_TOKEN_SECRET
 VERIFICATION_TOKEN_SECRET=VERIFICATION_TOKEN_SECRET
-PG_ADSN=postgresql+asyncpg://логин:пароль@Локальный IP адресс:порт/название БД
+PG_ADSN=postgresql+asyncpg://user:userpass@localhost:port/dbname
 POLICIES_CONFIG_PATH=/mnt/policies.yaml
 RABBITMQ_DEFAULT_USER=admin
 RABBITMQ_DEFAULT_PASS=pass
