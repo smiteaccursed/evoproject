@@ -1,4 +1,5 @@
 # Policy service
+Сервис проверки полномочий и точка входа проекта
 # Если без докера
 ### Установка
 - Установка зависимостей: `pip install -r requirements.txt `
@@ -13,8 +14,8 @@
 ### Конфигурация
 | Переменная    | Назначение                      | Значение по-умолчанию                        |
 | -----------   | -----                           | ---                                          |
-|JWT_SECRET ||JWT_SECRET|
-|POLICIES_CONFIG_PATH||policies.yaml|
+|JWT_SECRET |Парольная фраза, используемая для кодирования jwt-токена|JWT_SECRET|
+|POLICIES_CONFIG_PATH| Файл проверки полномочий |policies.yaml|
 
 
 ## Запуск
