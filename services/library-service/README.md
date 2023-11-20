@@ -1,4 +1,5 @@
 # Library service
+Позволяет работать с книгами
 # Если без докера
 ### Установка
 - Установка зависимостей: `pip install -r requirements.txt `
