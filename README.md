@@ -1,5 +1,6 @@
 # Проект "Книжный форум"
-![эвопроект drawio](https://github.com/smiteaccursed/evoproject/assets/144155604/da8e4b2c-bb66-4697-8819-4cbbd9a02123)
+![image](https://github.com/smiteaccursed/evoproject/assets/144155604/868426bb-e747-40d8-bf56-cc418410fd7a)
+
 ## Сервисы 
 | Название сервиса | Переход |
 | --- | --- |
