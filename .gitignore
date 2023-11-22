@@ -8,4 +8,5 @@ deploy/postgresql/data/*
 !deploy/postgresql/data/.gitkeep
 deploy/postgresql/fdata/*
 !deploy/postgresql/fdata/.gitkeep
+!deploy/.env
 
