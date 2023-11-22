@@ -8,7 +8,6 @@ TELEGRAM_CHAT_IDS = [YOUR_ID]
 TELEGRAM_BOT_TOKEN = YOUR_TOKEN
 RABBITMQ_DSN=amqp://admin:admin@127.0.0.1:5672//
 ```
-Готовый токен = `6528915216:AAEBv-O5X1itJWQD0YDAwHfNpC_BHPkPbJk`
 ### Запуск с использование файла конфигурации .env
 
 Для запуска из файла конфигурации нужно поместить файл .env в корень сервиса
