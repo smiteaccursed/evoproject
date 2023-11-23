@@ -3,26 +3,38 @@
 1. Создайте `.env` файл в текущей директории
 2. Заполните поля в нем
 ```ini
-POSTGRES_PASSWORD=userpass
-POSTGRES_USER=user
-POSTGRES_DB=dbname
-PG_DSN=postgresql://user:userpass@localhost:port/dbname
-MONGO_USER=mongouser
-MONGO_DB=mongoname
-MONGO_PASSWORD=mongopass
-MONGO_DSN=mongodb://mongouser:mongopass@localhost:port/mongoname
+POSTGRES_PASSWORD=admin
+POSTGRES_USER=adminpass
+POSTGRES_DB=pgdb
+PG_DSN=postgresql://admin:adminpass@postgresql:5432/pgdb
+PG_ADSN=postgresql+asyncpg://admin:adminpass@postgresql:5432/pgdb
+
+MONGO_USER=report
+MONGO_DB=complaint
+MONGO_PASSWORD=report
+MONGO_DSN=mongodb://report:report@mongo:27017/complaint
+
 JWT_SECRET=JWT_SECRET
 RESET_PASSWORD_TOKEN_SECRET=RESET_PASSWORD_TOKEN_SECRET
 VERIFICATION_TOKEN_SECRET=VERIFICATION_TOKEN_SECRET
-PG_ADSN=postgresql+asyncpg://user:userpass@localhost:port/dbname
+
 POLICIES_CONFIG_PATH=/mnt/policies.yaml
-RABBITMQ_DEFAULT_USER=admin
-RABBITMQ_DEFAULT_PASS=pass
-RABBITMQ_DSN=amqp://admin:pass@rabbitmq:5672/
-TELEGRAM_CHAT_IDS=[YOUR_ID]
-TELEGRAM_BOT_TOKEN=TOKER
+
+RABBITMQ_DEFAULT_USER=guest
+RABBITMQ_DEFAULT_PASS=guest
+RABBITMQ_DSN=amqp://guest:guest@rabbitmq:5672/
+
+TELEGRAM_CHAT_IDS=["YOUR ID"]
+TELEGRAM_BOT_TOKEN="BOT TOKEN"
+
+DEFAULT_GROUPS_CONFIG_PATH=/mnt/default-groups.json
+
 ```
-Готовый токен телеграм бота `6528915216:AAEBv-O5X1itJWQD0YDAwHfNpC_BHPkPbJk ` 
+## Поля, необходимые для заполнения вручную
+| Переменная    | Назначение                      | Получение                        |
+| -----------   | -----                           | ---                                          |
+| TELEGRAM_CHAT_IDS  | ID телеграмм чата | Воспользоваться любым ботом для получения ID в телеграме |
+| TELEGRAM_BOT_TOKEN | Токен телеграмм бота| Воспользоваться ботом BotFather в телеграме|
 
 3. Настройка `docker-compose.yaml` при необходимости
 4. Для запуска

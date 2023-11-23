@@ -10,6 +10,8 @@
 | Policy enforcement service | [Перейти](/services/policy-enforcement-service/)
 | Telegram service | [Перейти](/services/telegram-service/)
 | User service | [Перейти](/services/user-service/)
+## Запуск
+Для запуска перейти в папку [deploy](/deploy/) и проследуйте инструкциям
 
 ## Тесты
 | Тест | Переход |
